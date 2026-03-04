@@ -1,0 +1,61 @@
+-- Remove all previous tables
+DROP TABLE IF EXISTS ConcertType;
+DROP TABLE IF EXISTS Concert;
+DROP TABLE IF EXISTS Ticket;
+DROP TABLE IF EXISTS SittingTicket;
+DROP TABLE IF EXISTS StandingTicket;
+DROP TABLE IF EXISTS Attendee;
+DROP TABLE IF EXISTS Buyer;
+
+-- DDL for new tables
+CREATE TABLE ConcertType (
+    TypeId INTEGER PRIMARY KEY,
+    Title TEXT,
+    NrOccurences INTEGER
+);
+
+CREATE TABLE Concert (
+    ConcertId INTEGER PRIMARY KEY,
+    TypeID INTEGER NOT NULL,
+    Date TEXT,
+    StartTime TEXT,
+    Duration REAL,
+    Location TEXT,
+    Capcity INTEGER,
+    FOREIGN KEY (TypeID) REFERENCES ConcertType(TypeId)
+);
+
+CREATE TABLE Ticket (
+    TicketId INTEGER PRIMARY KEY,
+    AttendeeId INTEGER UNIQUE,
+    Price Integer,
+    FOREIGN KEY (AttendeeId) REFERENCES Attendee(AttendeeId)
+);
+
+CREATE TABLE SittingTicket (
+    TicketId INTEGER PRIMARY KEY,
+    SeatNr INTEGER,
+    FOREIGN KEY (TicketId) REFERENCES Ticket(TicketId)
+);
+
+CREATE TABLE StandingTicket (
+    TicketId INTEGER PRIMARY KEY,
+    RegionNr INTEGER,
+    FOREIGN KEY (TicketId) REFERENCES Ticket(TicketId)
+);
+
+CREATE TABLE Attendee (
+    AttendeeId INTEGER PRIMARY KEY,
+    TicketId INTEGER UNIQUE NOT NULL,
+    Name TEXT,
+    Address TEXT,
+);
+
+CREATE TABLE Buyer (
+    AttendeeId INTEGER PRIMARY KEY,
+    EMail TEXT,
+    Password TEXT,
+    NrTickets INTEGER,
+    PaymentMethod TEXT,
+    FOREIGN KEY (AttendeeId) REFERENCES Attendee(AttendeeId)
+);
