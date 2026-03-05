@@ -57,7 +57,7 @@ CREATE TABLE StandingTicket (
 
 CREATE TABLE Attendee (
     AttendeeId INTEGER,
-    TicketId INTEGER NOT NULL,
+    TicketId INTEGER UNIQUE NOT NULL,
     Name TEXT NOT NULL,
     Address TEXT NOT NULL,
     PRIMARY KEY (AttendeeId),
@@ -75,7 +75,7 @@ CREATE TABLE Buyer (
 
 CREATE TABLE Employee (
     EmployeeId INTEGER,
-    ConcertId INTEGER,
+    ConcertId INTEGER UNIQUE NOT NULL,
     Name TEXT NOT NULL,
     Address TEXT NOT NULL,
     Salary INTEGER NOT NULL,
