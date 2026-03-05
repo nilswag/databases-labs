@@ -6,56 +6,98 @@ DROP TABLE IF EXISTS SittingTicket;
 DROP TABLE IF EXISTS StandingTicket;
 DROP TABLE IF EXISTS Attendee;
 DROP TABLE IF EXISTS Buyer;
+DROP TABLE IF EXISTS Emplyee;
+DROP TABLE IF EXISTS Artist;
+DROP TABLE IF EXISTS SecurityGuard;
+DROP TABLE IF EXISTS Organizer;
 
 -- DDL for new tables
 CREATE TABLE ConcertType (
-    TypeId INTEGER PRIMARY KEY,
+    TypeId INTEGER,
     Title TEXT,
-    NrOccurences INTEGER
+    NrOccurences INTEGER,
+    PRIMARY KEY (TypeID)
 );
 
 CREATE TABLE Concert (
-    ConcertId INTEGER PRIMARY KEY,
+    ConcertId INTEGER,
     TypeID INTEGER NOT NULL,
     Date TEXT,
     StartTime TEXT,
     Duration REAL,
     Location TEXT,
     Capcity INTEGER,
+    PRIMARY KEY (ConcertId),
     FOREIGN KEY (TypeID) REFERENCES ConcertType(TypeId)
 );
 
 CREATE TABLE Ticket (
-    TicketId INTEGER PRIMARY KEY,
+    TicketId INTEGER,
     AttendeeId INTEGER UNIQUE,
     Price Integer,
+    PRIMARY KEY (TicketId)
     FOREIGN KEY (AttendeeId) REFERENCES Attendee(AttendeeId)
 );
 
 CREATE TABLE SittingTicket (
-    TicketId INTEGER PRIMARY KEY,
+    TicketId INTEGER,
     SeatNr INTEGER,
+    PRIMARY KEY (TicketId),
     FOREIGN KEY (TicketId) REFERENCES Ticket(TicketId)
 );
 
 CREATE TABLE StandingTicket (
-    TicketId INTEGER PRIMARY KEY,
+    TicketId INTEGER,
     RegionNr INTEGER,
+    PRIMARY KEY (TicketId),
     FOREIGN KEY (TicketId) REFERENCES Ticket(TicketId)
 );
 
 CREATE TABLE Attendee (
-    AttendeeId INTEGER PRIMARY KEY,
+    AttendeeId INTEGER,
     TicketId INTEGER UNIQUE NOT NULL,
     Name TEXT,
     Address TEXT,
+    PRIMARY KEY (AttendeeId),
+    FOREIGN KEY (TicketId) REFERENCES Ticket(TicketId)
 );
 
 CREATE TABLE Buyer (
-    AttendeeId INTEGER PRIMARY KEY,
+    AttendeeId INTEGER,
     EMail TEXT,
     Password TEXT,
     NrTickets INTEGER,
     PaymentMethod TEXT,
+    PRIMARY KEY (AttendeeId),
     FOREIGN KEY (AttendeeId) REFERENCES Attendee(AttendeeId)
+);
+
+CREATE TABLE Employee (
+    EmployeeId INTEGER,
+    Name TEXT,
+    Address TEXT,
+    Salary INTEGER,
+    PRIMARY KEY (EmployeeId)
+);
+
+CREATE TABLE Artist(
+    EmployeeId INTEGER,
+    Genre TEXT,
+    Popularity REAL,
+    PRIMARY KEY (EmployeeId),
+    FOREIGN KEY (EmployeeId) Employee(EmployeeId)
+)
+
+CREATE TABLE SecurityGuard (
+    EmployeeId INTEGER,
+    Rank TEXT,
+    PRIMARY KEY (EmployeeId),
+    FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId)
+);
+
+CREATE TABLE Organizer (
+    EmployeeId INTEGER,
+    Specialization TEXT,
+    PRIMARY KEY (EmployeeId),
+    FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId)
 );
