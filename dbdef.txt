@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS SittingTicket;
 DROP TABLE IF EXISTS StandingTicket;
 DROP TABLE IF EXISTS Attendee;
 DROP TABLE IF EXISTS Buyer;
-DROP TABLE IF EXISTS Emplyee;
+DROP TABLE IF EXISTS Employee;
 DROP TABLE IF EXISTS Artist;
 DROP TABLE IF EXISTS SecurityGuard;
 DROP TABLE IF EXISTS Organizer;
@@ -14,8 +14,7 @@ DROP TABLE IF EXISTS Organizer;
 -- DDL for new tables
 CREATE TABLE ConcertType (
     TypeId INTEGER,
-    Title TEXT,
-    NrOccurences INTEGER,
+    Title TEXT UNIQUE NOT NULL,
     PRIMARY KEY (TypeID)
 );
 
@@ -25,59 +24,60 @@ CREATE TABLE Concert (
     Date TEXT,
     StartTime TEXT,
     Duration REAL,
-    Location TEXT,
-    Capcity INTEGER,
+    Location TEXT NOT NULL,
+    Capacity INTEGER NOT NULL,
     PRIMARY KEY (ConcertId),
     FOREIGN KEY (TypeID) REFERENCES ConcertType(TypeId)
 );
 
 CREATE TABLE Ticket (
     TicketId INTEGER,
-    AttendeeId INTEGER UNIQUE,
-    Price Integer,
-    PRIMARY KEY (TicketId)
-    FOREIGN KEY (AttendeeId) REFERENCES Attendee(AttendeeId)
+    ConcertId INTEGER NOT NULL,
+    Price Integer NOT NULL,
+    PRIMARY KEY (TicketId),
+    FOREIGN KEY (ConcertId) REFERENCES Concert(ConcertId)
 );
 
 CREATE TABLE SittingTicket (
     TicketId INTEGER,
-    SeatNr INTEGER,
+    SeatNr INTEGER NOT NULL,
     PRIMARY KEY (TicketId),
     FOREIGN KEY (TicketId) REFERENCES Ticket(TicketId)
 );
 
 CREATE TABLE StandingTicket (
     TicketId INTEGER,
-    RegionNr INTEGER,
+    RegionNr INTEGER NOT NULL,
     PRIMARY KEY (TicketId),
     FOREIGN KEY (TicketId) REFERENCES Ticket(TicketId)
 );
 
 CREATE TABLE Attendee (
     AttendeeId INTEGER,
-    TicketId INTEGER UNIQUE NOT NULL,
-    Name TEXT,
-    Address TEXT,
+    TicketId INTEGER NOT NULL,
+    Name TEXT NOT NULL,
+    Address TEXT NOT NULL,
     PRIMARY KEY (AttendeeId),
     FOREIGN KEY (TicketId) REFERENCES Ticket(TicketId)
 );
 
 CREATE TABLE Buyer (
     AttendeeId INTEGER,
-    EMail TEXT,
-    Password TEXT,
-    NrTickets INTEGER,
-    PaymentMethod TEXT,
+    EMail TEXT NOT NULL,
+    Password TEXT NOT NULL,
+    PaymentMethod TEXT NOT NULL,
     PRIMARY KEY (AttendeeId),
     FOREIGN KEY (AttendeeId) REFERENCES Attendee(AttendeeId)
 );
 
 CREATE TABLE Employee (
     EmployeeId INTEGER,
-    Name TEXT,
-    Address TEXT,
-    Salary INTEGER,
-    PRIMARY KEY (EmployeeId)
+    ConcertId INTEGER,
+    Name TEXT NOT NULL,
+    Address TEXT NOT NULL,
+    Salary INTEGER NOT NULL,
+    PRIMARY KEY (EmployeeId),
+    FOREIGN KEY (ConcertId) REFERENCES Concert(ConcertId)
 );
 
 CREATE TABLE Artist(
@@ -85,19 +85,19 @@ CREATE TABLE Artist(
     Genre TEXT,
     Popularity REAL,
     PRIMARY KEY (EmployeeId),
-    FOREIGN KEY (EmployeeId) Employee(EmployeeId)
-)
+    FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId)
+);
 
 CREATE TABLE SecurityGuard (
     EmployeeId INTEGER,
-    Rank TEXT,
+    Rank TEXT NOT NULL,
     PRIMARY KEY (EmployeeId),
     FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId)
 );
 
 CREATE TABLE Organizer (
     EmployeeId INTEGER,
-    Specialization TEXT,
+    Specialization TEXT NOT NULL,
     PRIMARY KEY (EmployeeId),
     FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId)
 );
