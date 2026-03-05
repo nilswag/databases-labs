@@ -1,20 +1,23 @@
--- Remove all previous tables
-DROP TABLE IF EXISTS ConcertType;
-DROP TABLE IF EXISTS Concert;
-DROP TABLE IF EXISTS Ticket;
-DROP TABLE IF EXISTS SittingTicket;
-DROP TABLE IF EXISTS StandingTicket;
-DROP TABLE IF EXISTS Attendee;
-DROP TABLE IF EXISTS Buyer;
-DROP TABLE IF EXISTS Employee;
-DROP TABLE IF EXISTS Artist;
-DROP TABLE IF EXISTS SecurityGuard;
-DROP TABLE IF EXISTS Organizer;
+-- Turn on foreign keys
+PRAGMA foreign_keys = ON;
+
+-- Remove all previous tables (only for writing the DDL)
+-- DROP TABLE IF EXISTS ConcertType;
+-- DROP TABLE IF EXISTS Concert;
+-- DROP TABLE IF EXISTS Ticket;
+-- DROP TABLE IF EXISTS SittingTicket;
+-- DROP TABLE IF EXISTS StandingTicket;
+-- DROP TABLE IF EXISTS Attendee;
+-- DROP TABLE IF EXISTS Buyer;
+-- DROP TABLE IF EXISTS Employee;
+-- DROP TABLE IF EXISTS Artist;
+-- DROP TABLE IF EXISTS SecurityGuard;
+-- DROP TABLE IF EXISTS Organizer;
 
 -- DDL for new tables
 CREATE TABLE ConcertType (
     TypeId INTEGER,
-    Title TEXT UNIQUE NOT NULL,
+    Title TEXT NOT NULL,
     PRIMARY KEY (TypeID)
 );
 
